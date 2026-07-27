@@ -14,7 +14,7 @@ namespace CircuitSimulatorWpf.ViewModels
             sources.Items.Add(new ElementPaletteItemViewModel
             {
                 DisplayName = "Źródło napięcia",
-                IconPath = "/Assets/voltage_source.png",
+                IconPath = "CircuitSimulatorWpf/Assets/voltage_source.png",
                 CreateElement = () => new VoltageSource("VS1", 0, 0, 5.0)
             });
             Categories.Add(sources);
@@ -23,7 +23,7 @@ namespace CircuitSimulatorWpf.ViewModels
             dcElements.Items.Add(new ElementPaletteItemViewModel
             {
                 DisplayName = "Rezystor",
-                IconPath = "/Assets/resistor.png",
+                IconPath = "pack://application:,,,/Assets/resistor.png",
                 CreateElement = () => new Resistor("R1", 0, 0, 1000)
             });
             Categories.Add(dcElements);
