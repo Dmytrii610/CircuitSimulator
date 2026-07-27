@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="CircuitCore/CircuitCore.csproj" />
+  <Project Path="CircuitSimulator.Tests/CircuitSimulator.Tests.csproj" />
+  <Project Path="CircuitSimulatorWpf/CircuitSimulatorWpf.csproj" />
+  <Project Path="MathGraphLib/MathGraphLib.csproj" />
+  <Project Path="MatrixLib/MatrixLib.csproj" />
+</Solution>
