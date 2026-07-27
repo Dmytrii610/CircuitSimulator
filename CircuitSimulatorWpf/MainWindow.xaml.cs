@@ -1,15 +1,7 @@
-﻿using System.Text;
+﻿using CircuitSimulatorWpf.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace CircuitSimulator
+namespace CircuitSimulatorWpf
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -19,6 +11,7 @@ namespace CircuitSimulator
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
     }
 }
