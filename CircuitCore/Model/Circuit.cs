@@ -79,5 +79,6 @@ namespace CircuitCore.Model
             unknownCount = next;
             return map;
         }
+        public double GetVoltage(Node node) => graph.GetNodeData(node).Voltage;
     }
 }
