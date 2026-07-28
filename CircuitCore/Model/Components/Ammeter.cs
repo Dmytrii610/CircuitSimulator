@@ -9,7 +9,7 @@ namespace CircuitCore.Model.Components
         public double MeasuredValue { get; private set; }
 
         public Ammeter(string name, int nodeA, int nodeB)
-            :base(name,nodeA,nodeB,voltage:0)
+            :base(name,nodeA,nodeB,0)
         {
 
         }

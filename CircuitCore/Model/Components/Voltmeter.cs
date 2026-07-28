@@ -4,19 +4,19 @@ using MatrixLib;
 
 namespace CircuitCore.Model.Components
 {
-    public class Voltemeter : CircuitElement, IMeasure
+    public class Voltmeter : CircuitElement, IMeasure
     {
         public string MeasurementLabel => $"Napięcie: {Name}";
         public double MeasuredValue { get; private set; }
 
-        public Voltemeter(string name, int nodeA, int nodeB)
+        public Voltmeter(string name, int nodeA, int nodeB)
             : base(name, nodeA, nodeB)
         {
 
         }
         public override void Stamp(Matrix conductance, Matrix currentVector, double dt)
         {
-            throw new NotImplementedException();
+            //ideal voltmeter doesn`t have a conductance -- so he have no affect to the circuit.
         }
         public override void OnSolved(Matrix result)
         {
