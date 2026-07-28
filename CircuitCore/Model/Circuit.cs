@@ -73,6 +73,7 @@ namespace CircuitCore.Model
                 }
                 else
                 {
+                    map[node] = next;
                     next++;
                 }
             }

@@ -21,8 +21,10 @@ public class CapasitorTests
 
         Assert.That(conductance[0, 0], Is.EqualTo(expectedGeq).Within(1e-9));
         Assert.That(conductance[1, 1], Is.EqualTo(expectedGeq).Within(1e-9));
-        Assert.That(conductance[0, 1], Is.EqualTo(0).Within(1e-9));
-        Assert.That(conductance[1, 0], Is.EqualTo(0).Within(1e-9));
+        Assert.That(conductance[0, 1], Is.EqualTo(-expectedGeq).Within(1e-9));
+        Assert.That(conductance[1, 0], Is.EqualTo(-expectedGeq).Within(1e-9));
+        Assert.That(current[0, 0], Is.EqualTo(0).Within(1e-9));
+        Assert.That(current[1, 0], Is.EqualTo(0).Within(1e-9));
     }
     [Test]
     public void OnSolved_UpdatesPreviousVoltageFromResult()

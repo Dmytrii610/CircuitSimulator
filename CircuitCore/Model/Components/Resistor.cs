@@ -18,8 +18,8 @@ namespace CircuitCore.Model.Components
         {
             var g = 1 / Resistance;
 
-            if (NodeAIsGround) conductance[NodeA, NodeA] += g;
-            if (NodeBIsGround) conductance[NodeB, NodeB] += g;
+            if (!NodeAIsGround) conductance[NodeA, NodeA] += g;
+            if (!NodeBIsGround) conductance[NodeB, NodeB] += g;
             if (!NodeAIsGround && !NodeBIsGround)
             {
                 conductance[NodeB, NodeA] -= g;
