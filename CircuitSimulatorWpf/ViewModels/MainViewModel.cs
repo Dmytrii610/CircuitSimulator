@@ -23,7 +23,7 @@ namespace CircuitSimulatorWpf.ViewModels
             dcElements.Items.Add(new ElementPaletteItemViewModel
             {
                 DisplayName = "Rezystor",
-                IconPath = "pack://application:,,,/Assets/resistor.png",
+                IconPath = "ResistorIcon",
                 CreateElement = () => new Resistor("R1", 0, 0, 1000)
             });
             Categories.Add(dcElements);
