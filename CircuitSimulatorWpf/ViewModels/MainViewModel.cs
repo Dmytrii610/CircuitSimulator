@@ -34,6 +34,14 @@ namespace CircuitSimulatorWpf.ViewModels
                 CreateElement = () => new Capasitor("C1", 0, 0, 100)
             });
             Categories.Add(dcElements);
+            var measureElements = new ElementCategoryViewModel { Name = "Elementy pomiarowe" };
+            measureElements.Items.Add(new ElementPaletteItemViewModel
+            {
+                DisplayName = "Ammeter",
+                IconPath = "pack://application:,,,/Assets/ammeter.svg",
+                CreateElement = () => new Ammeter("A1", 0, 0)
+            });
+            Categories.Add(measureElements);
         }
 
         public void PlaceElement(ElementPaletteItemViewModel paletteItem, Point position)
