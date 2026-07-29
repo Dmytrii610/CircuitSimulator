@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <None Remove="Assets\capasitor.svg" />
     <None Remove="Assets\dc_voltage_source.svg" />
     <None Remove="Assets\resistor.svg" />
   </ItemGroup>
@@ -20,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\capasitor.svg" />
     <Resource Include="Assets\dc_voltage_source.svg" />
     <Resource Include="Assets\resistor.svg" />
   </ItemGroup>

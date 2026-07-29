@@ -26,6 +26,12 @@ namespace CircuitSimulatorWpf.ViewModels
                 IconPath = "pack://application:,,,/Assets/resistor.svg",
                 CreateElement = () => new Resistor("R1", 0, 0, 1000)
             });
+            dcElements.Items.Add(new ElementPaletteItemViewModel
+            {
+                DisplayName = "Kondensator",
+                IconPath = "pack://application:,,,/Assets/capasitor.svg",
+                CreateElement = () => new Capasitor("C1", 0, 0, 100)
+            });
             Categories.Add(dcElements);
         }
     }
