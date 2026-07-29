@@ -13,17 +13,17 @@ namespace CircuitSimulatorWpf.ViewModels
             var sources = new ElementCategoryViewModel { Name = "Źródła zasilania" };
             sources.Items.Add(new ElementPaletteItemViewModel
             {
-                DisplayName = "Źródło napięcia",
-                IconPath = "CircuitSimulatorWpf/Assets/voltage_source.png",
+                DisplayName = "Źródło napięcia DC",
+                IconPath = "pack://application:,,,/Assets/dc_voltage_source.svg",
                 CreateElement = () => new VoltageSource("VS1", 0, 0, 5.0)
             });
             Categories.Add(sources);
 
-            var dcElements = new ElementCategoryViewModel { Name = "Elementy DC" };
+            var dcElements = new ElementCategoryViewModel { Name = "Elementy" };
             dcElements.Items.Add(new ElementPaletteItemViewModel
             {
                 DisplayName = "Rezystor",
-                IconPath = "ResistorIcon",
+                IconPath = "pack://application:,,,/Assets/resistor.svg",
                 CreateElement = () => new Resistor("R1", 0, 0, 1000)
             });
             Categories.Add(dcElements);

@@ -1,5 +1,6 @@
 ﻿using CircuitSimulatorWpf.ViewModels;
 using System.Windows;
+using System.Windows.Input;
 
 namespace CircuitSimulatorWpf
 {
@@ -12,6 +13,16 @@ namespace CircuitSimulatorWpf
         {
             InitializeComponent();
             DataContext = new MainViewModel();
+        }
+        private void PaletteItem_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && sender is FrameworkElement fe)
+            {
+                if (fe.DataContext is ElementPaletteItemViewModel item)
+                {
+                    DragDrop.DoDragDrop(fe, item, DragDropEffects.Copy);
+                }
+            }
         }
     }
 }
