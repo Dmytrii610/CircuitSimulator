@@ -35,7 +35,30 @@
             </ItemsControl>
         </ScrollViewer>
 
-        <!-- Prawa strona: pole symulacji (na razie puste) -->
-        <Border Grid.Column="1" Background="White" BorderBrush="Gray" BorderThickness="1"/>
+        <!-- Prawa strona: pole symulacji -->
+        <ItemsControl x:Name="SimulationCanvas" Grid.Column="1"
+              ItemsSource="{Binding PlacedElements}"
+              AllowDrop="True" Drop="SimulationCanvas_Drop"
+              Background="White">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
+                        <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>

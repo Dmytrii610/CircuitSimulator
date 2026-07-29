@@ -1,5 +1,6 @@
 ﻿using CircuitSimulatorWpf.ViewModels;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace CircuitSimulatorWpf
@@ -22,6 +23,15 @@ namespace CircuitSimulatorWpf
                 {
                     DragDrop.DoDragDrop(fe, item, DragDropEffects.Copy);
                 }
+            }
+        }
+        private void SimulationCanvas_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetData(typeof(ElementPaletteItemViewModel)) is ElementPaletteItemViewModel paletteItem)
+            {
+                var position = e.GetPosition((ItemsControl)sender);
+                var vm = (MainViewModel)((FrameworkElement)sender).DataContext;
+                vm.PlaceElement(paletteItem, position);
             }
         }
     }

@@ -1,13 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using CircuitCore.Model.Components;
+using System.Windows;
 
 namespace CircuitSimulatorWpf.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
         public ObservableCollection<ElementCategoryViewModel> Categories { get; } = new();
-
+        public ObservableCollection<CanvasElementViewModel> PlacedElements { get; } = new();
         public MainViewModel()
         {
             var sources = new ElementCategoryViewModel { Name = "Źródła zasilania" };
@@ -33,6 +34,19 @@ namespace CircuitSimulatorWpf.ViewModels
                 CreateElement = () => new Capasitor("C1", 0, 0, 100)
             });
             Categories.Add(dcElements);
+        }
+
+        public void PlaceElement(ElementPaletteItemViewModel paletteItem, Point position)
+        {
+            var element = paletteItem.CreateElement();
+            var canvasElement = new CanvasElementViewModel(
+                element,
+                paletteItem.IconPath,
+                paletteItem.DisplayName,
+                position.X,
+                position.Y);
+
+            PlacedElements.Add(canvasElement);
         }
     }
 }
