@@ -9,6 +9,8 @@ namespace CircuitSimulatorWpf.ViewModels
     {
         public ObservableCollection<ElementCategoryViewModel> Categories { get; } = new();
         public ObservableCollection<CanvasElementViewModel> PlacedElements { get; } = new();
+        public ObservableCollection<WireViewModel> Wires { get; } = new();
+        private PinViewModel pendingPin;
         public MainViewModel()
         {
             var sources = new ElementCategoryViewModel { Name = "Źródła zasilania" };
@@ -43,7 +45,23 @@ namespace CircuitSimulatorWpf.ViewModels
             });
             Categories.Add(measureElements);
         }
+        public void HandlePinClick(PinViewModel pin)
+        {
+            if (pendingPin == null)
+            {
+                pendingPin = pin;
+                return;
+            }
 
+            if (pendingPin == pin)
+            {
+                pendingPin = null;
+                return;
+            }
+
+            Wires.Add(new WireViewModel(pendingPin, pin));
+            pendingPin = null;
+        }
         public void PlaceElement(ElementPaletteItemViewModel paletteItem, Point position)
         {
             var element = paletteItem.CreateElement();

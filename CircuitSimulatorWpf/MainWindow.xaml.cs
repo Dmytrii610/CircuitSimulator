@@ -74,5 +74,14 @@ namespace CircuitSimulatorWpf
 
             draggedElement = null;
         }
+        private void Pin_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.Tag is PinViewModel pin)
+            {
+                var vm = (MainViewModel)DataContext;
+                vm.HandlePinClick(pin);
+                e.Handled = true;
+            }
+        }
     }
 }

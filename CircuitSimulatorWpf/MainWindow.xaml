@@ -36,40 +36,58 @@
         </ScrollViewer>
 
         <!-- Prawa strona: pole symulacji -->
-        <ItemsControl x:Name="SimulationCanvas" Grid.Column="1"
-              ItemsSource="{Binding PlacedElements}"
-              AllowDrop="True" Drop="SimulationCanvas_Drop"
-              Background="White">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Canvas>
-                        <StackPanel Orientation="Vertical"
-                            Cursor="SizeAll"
-                            MouseLeftButtonDown="CanvasElement_MouseLeftButtonDown"
-                            MouseMove="CanvasElement_MouseMove"
-                            MouseLeftButtonUp="CanvasElement_MouseLeftButtonUp">
-                            <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
-                            <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
+        <Grid Grid.Column="1">
+            <ItemsControl x:Name="SimulationCanvas" Grid.Column="1"
+          ItemsSource="{Binding PlacedElements}"
+          AllowDrop="True" Drop="SimulationCanvas_Drop"
+          Background="White">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Canvas>
+                            <StackPanel Orientation="Vertical"
+                        Cursor="SizeAll"
+                        MouseLeftButtonDown="CanvasElement_MouseLeftButtonDown"
+                        MouseMove="CanvasElement_MouseMove"
+                        MouseLeftButtonUp="CanvasElement_MouseLeftButtonUp">
+                                <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
+                                <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
+                            </StackPanel>
 
-                        <Ellipse Width="8" Height="8" Fill="Red"
-                            Canvas.Left="{Binding PinA.OffsetX}" Canvas.Top="{Binding PinA.OffsetY}"/>
-                        <Ellipse Width="8" Height="8" Fill="Red"
-                            Canvas.Left="{Binding PinB.OffsetX}" Canvas.Top="{Binding PinB.OffsetY}"/>
-                    </Canvas>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                            <Ellipse Width="8" Height="8" Fill="Red" Cursor="Hand"
+                        Canvas.Left="{Binding PinA.OffsetX}" Canvas.Top="{Binding PinA.OffsetY}"
+                        MouseLeftButtonDown="Pin_MouseLeftButtonDown" Tag="{Binding PinA}"/>
+                            <Ellipse Width="8" Height="8" Fill="Red" Cursor="Hand"
+                        Canvas.Left="{Binding PinB.OffsetX}" Canvas.Top="{Binding PinB.OffsetY}"
+                        MouseLeftButtonDown="Pin_MouseLeftButtonDown" Tag="{Binding PinB}"/>
+                        </Canvas>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ItemsControl ItemsSource="{Binding Wires}" IsHitTestVisible="False">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Line X1="{Binding X1}" Y1="{Binding Y1}"
+                  X2="{Binding X2}" Y2="{Binding Y2}"
+                  Stroke="Black" StrokeThickness="2"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
     </Grid>
 </Window>
