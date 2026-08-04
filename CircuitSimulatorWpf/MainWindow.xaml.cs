@@ -40,13 +40,20 @@ namespace CircuitSimulatorWpf
         {
             if (draggedElement == null || e.LeftButton != MouseButtonState.Pressed)
                 return;
+            if (sender is not FrameworkElement fe) return;
 
             var currentPosition = e.GetPosition(SimulationCanvas);
             double deltaX = currentPosition.X - dragStartPoint.X;
             double deltaY = currentPosition.Y - dragStartPoint.Y;
 
-            draggedElement.X += deltaX;
-            draggedElement.Y += deltaY;
+            double newX = draggedElement.X + deltaX;
+            double newY = draggedElement.Y + deltaY;
+
+            double maxX = Math.Max(0, SimulationCanvas.ActualWidth - fe.ActualWidth);
+            double maxY = Math.Max(0, SimulationCanvas.ActualHeight - fe.ActualHeight);
+
+            draggedElement.X = Math.Clamp(newX, 0, maxX);
+            draggedElement.Y = Math.Clamp(newY, 0, maxY);
 
             dragStartPoint = currentPosition;
         }
