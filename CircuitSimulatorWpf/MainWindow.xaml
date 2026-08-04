@@ -53,7 +53,11 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical"
+                        Cursor="SizeAll"
+                        MouseLeftButtonDown="CanvasElement_MouseLeftButtonDown"
+                        MouseMove="CanvasElement_MouseMove"
+                        MouseLeftButtonUp="CanvasElement_MouseLeftButtonUp">
                         <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
                         <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
                     </StackPanel>

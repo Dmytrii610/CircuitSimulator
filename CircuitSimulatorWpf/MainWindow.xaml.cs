@@ -10,6 +10,8 @@ namespace CircuitSimulatorWpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        private CanvasElementViewModel draggedElement;
+        private Point dragStartPoint;
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +35,37 @@ namespace CircuitSimulatorWpf
                 var vm = (MainViewModel)((FrameworkElement)sender).DataContext;
                 vm.PlaceElement(paletteItem, position);
             }
+        }
+        private void CanvasElement_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (draggedElement == null || e.LeftButton != MouseButtonState.Pressed)
+                return;
+
+            var currentPosition = e.GetPosition(SimulationCanvas);
+            double deltaX = currentPosition.X - dragStartPoint.X;
+            double deltaY = currentPosition.Y - dragStartPoint.Y;
+
+            draggedElement.X += deltaX;
+            draggedElement.Y += deltaY;
+
+            dragStartPoint = currentPosition;
+        }
+        private void CanvasElement_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.DataContext is CanvasElementViewModel vm)
+            {
+                draggedElement = vm;
+                dragStartPoint = e.GetPosition(SimulationCanvas);
+                fe.CaptureMouse();
+                e.Handled = true;
+            }
+        }   
+        private void CanvasElement_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe)
+                fe.ReleaseMouseCapture();
+
+            draggedElement = null;
         }
     }
 }
