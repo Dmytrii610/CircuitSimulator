@@ -53,14 +53,21 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical"
-                        Cursor="SizeAll"
-                        MouseLeftButtonDown="CanvasElement_MouseLeftButtonDown"
-                        MouseMove="CanvasElement_MouseMove"
-                        MouseLeftButtonUp="CanvasElement_MouseLeftButtonUp">
-                        <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
-                        <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
-                    </StackPanel>
+                    <Canvas>
+                        <StackPanel Orientation="Vertical"
+                            Cursor="SizeAll"
+                            MouseLeftButtonDown="CanvasElement_MouseLeftButtonDown"
+                            MouseMove="CanvasElement_MouseMove"
+                            MouseLeftButtonUp="CanvasElement_MouseLeftButtonUp">
+                            <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
+                            <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+
+                        <Ellipse Width="8" Height="8" Fill="Red"
+                            Canvas.Left="{Binding PinA.OffsetX}" Canvas.Top="{Binding PinA.OffsetY}"/>
+                        <Ellipse Width="8" Height="8" Fill="Red"
+                            Canvas.Left="{Binding PinB.OffsetX}" Canvas.Top="{Binding PinB.OffsetY}"/>
+                    </Canvas>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

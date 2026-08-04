@@ -16,6 +16,8 @@ namespace CircuitSimulatorWpf.ViewModels
         private double x;
         [ObservableProperty]
         private double y;
+        public PinViewModel PinA { get; }
+        public PinViewModel PinB { get; }
         public CanvasElementViewModel(ICircuitElement element, string iconPath, string displayName, double x, double y)
         {
             Element = element;
@@ -23,6 +25,9 @@ namespace CircuitSimulatorWpf.ViewModels
             DisplayName = displayName;
             this.x = x;
             this.y = y;
+
+            PinA = new PinViewModel(this, PinRole.A, 0, 20);
+            PinB = new PinViewModel(this, PinRole.B, 40, 20);
         }
     }
 }
