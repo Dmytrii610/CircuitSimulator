@@ -12,6 +12,8 @@ namespace CircuitSimulatorWpf.ViewModels
         [ObservableProperty] private double y;
         
         public PinViewModel Pin { get; }
+        public string DisplayName { get; init; }
+        public string IconPath { get; init; }
         public GroupMarkerViewModel(double x, double y)
         {
             this.x = x;

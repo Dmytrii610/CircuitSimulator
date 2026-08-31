@@ -54,7 +54,7 @@ namespace CircuitSimulatorWpf.ViewModels
             symbols.Items.Add(new ElementPaletteItemViewModel
             {
                 DisplayName = "Masa (GND)",
-                IconPath = "/Assets/ground.svg",
+                IconPath = "pack://application:,,,/Assets/ground.svg",
                 IsGroundSymbol = true,
                 CreateElement = null
             });

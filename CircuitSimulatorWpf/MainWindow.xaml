@@ -88,6 +88,38 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+                <ItemsControl ItemsSource="{Binding GroundMarkers}" IsHitTestVisible="True">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Canvas>
+                            <StackPanel Orientation="Vertical"
+                                Cursor="SizeAll"
+                                MouseLeftButtonDown="GroundMarker_MouseLeftButtonDown"
+                                MouseMove="GroundMarker_MouseMove"
+                                MouseLeftButtonUp="GroundMarker_MouseLeftButtonUp">
+                                <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
+                                <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
+                            </StackPanel>
+
+                            <Ellipse Width="8" Height="8" Fill="Red" Cursor="Hand"
+                             Canvas.Left="{Binding Pin.OffsetX}" Canvas.Top="{Binding Pin.OffsetY}"
+                             MouseLeftButtonDown="Pin_MouseLeftButtonDown" Tag="{Binding Pin}"/>
+                        </Canvas>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
         </Grid>
     </Grid>
 </Window>
