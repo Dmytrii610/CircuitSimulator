@@ -131,6 +131,35 @@ namespace CircuitSimulatorWpf.ViewModels
             }
             return (pinToGroup, rootToIndex.Count);
         }
+        private List<string> ValidateGroundConnection(Dictionary<PinViewModel,int> pinToGroup, HashSet<int> groundGroups)
+        {
+            var err = new List<string>();
+            var visited = new HashSet<int>(groundGroups);
+            var queue = new Queue<int>(groundGroups);
+            var adj = BuildGroupsAdjacency(groundGroups);
+
+            while (queue.Any())
+            {
+                var current = queue.Dequeue();
+                foreach (var neighbor in adj[current])
+                {
+                    if (visited.Add(neighbor)) queue.Enqueue(neighbor);
+                }
+            }
+
+            var allGroups = pinToGroup.Values.Distinct();
+            foreach (var g in allGroups.Except(visited))
+            {
+                err.Add($"Node {g} does not have a connection with ground.");
+            }
+            return err;
+        }
+
+        private Dictionary<int,int> BuildGroupsAdjacency(HashSet<int> groundGroups)
+        {
+            throw new NotImplementedException();
+        }
+
         public Circuit BuildCircuit()
         {
             var (pinToGroup, groupCount) = BuildGroups();
@@ -156,7 +185,14 @@ namespace CircuitSimulatorWpf.ViewModels
         private void RunSimulation()
         {
             var circuit = BuildCircuit();
-            circuit.Solve();
+            try
+            {
+                circuit.Solve();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

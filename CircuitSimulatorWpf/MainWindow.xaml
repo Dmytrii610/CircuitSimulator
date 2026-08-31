@@ -103,14 +103,12 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <StackPanel Orientation="Vertical"
+                            <Path Data="M6,0 L6,10 M0,14 L12,14 M2,18 L10,18 M4,22 L8,22"
+                                Stroke="Black" StrokeThickness="2"
                                 Cursor="SizeAll"
                                 MouseLeftButtonDown="GroundMarker_MouseLeftButtonDown"
                                 MouseMove="GroundMarker_MouseMove"
-                                MouseLeftButtonUp="GroundMarker_MouseLeftButtonUp">
-                                <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
-                                <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
-                            </StackPanel>
+                                MouseLeftButtonUp="GroundMarker_MouseLeftButtonUp"/>
 
                             <Ellipse Width="8" Height="8" Fill="Red" Cursor="Hand"
                              Canvas.Left="{Binding Pin.OffsetX}" Canvas.Top="{Binding Pin.OffsetY}"
