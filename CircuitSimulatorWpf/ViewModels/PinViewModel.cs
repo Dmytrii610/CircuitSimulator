@@ -8,13 +8,13 @@ namespace CircuitSimulatorWpf.ViewModels
     }
     public partial class PinViewModel : ObservableObject
     {
-        public CanvasElementViewModel Owner { get; }
+        public IPinOwner Owner { get; }
         public PinRole Role { get; }
         public double OffsetX { get; }
         public double OffsetY { get; }
         public double AbsoluteX => Owner.X + OffsetX;
         public double AbsoluteY => Owner.Y + OffsetY;
-        public PinViewModel(CanvasElementViewModel owner, PinRole role, double offsetX, double offsetY) 
+        public PinViewModel(IPinOwner owner, PinRole role, double offsetX, double offsetY) 
         {
             Owner = owner;
             Role = role;
@@ -22,7 +22,7 @@ namespace CircuitSimulatorWpf.ViewModels
             OffsetY = offsetY;
             Owner.PropertyChanged += (_, e) =>
             {
-                if (e.PropertyName == nameof(CanvasElementViewModel.X) || e.PropertyName == nameof(CanvasElementViewModel.Y))
+                if (e.PropertyName == nameof(IPinOwner.X) || e.PropertyName == nameof(IPinOwner.Y))
                 {
                     OnPropertyChanged(nameof(AbsoluteX));
                     OnPropertyChanged(nameof(AbsoluteY));

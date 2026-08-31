@@ -9,6 +9,7 @@ namespace CircuitSimulatorWpf.ViewModels
     {
         public string DisplayName { get; init; }
         public string IconPath { get; init; }
+        public bool IsGroundSymbol { get; init; }
         public Func<ICircuitElement> CreateElement { get; init; }
     }
 }

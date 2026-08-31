@@ -1,6 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
+﻿using CircuitCore.Model;
 using CircuitCore.Model.Components;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using MathGraphLib;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace CircuitSimulatorWpf.ViewModels
@@ -9,6 +12,7 @@ namespace CircuitSimulatorWpf.ViewModels
     {
         public ObservableCollection<ElementCategoryViewModel> Categories { get; } = new();
         public ObservableCollection<CanvasElementViewModel> PlacedElements { get; } = new();
+        public ObservableCollection<GroupMarkerViewModel> GroundMarkers { get; } = new();
         public ObservableCollection<WireViewModel> Wires { get; } = new();
         private PinViewModel pendingPin;
         public MainViewModel()
@@ -36,6 +40,7 @@ namespace CircuitSimulatorWpf.ViewModels
                 CreateElement = () => new Capasitor("C1", 0, 0, 100)
             });
             Categories.Add(dcElements);
+
             var measureElements = new ElementCategoryViewModel { Name = "Elementy pomiarowe" };
             measureElements.Items.Add(new ElementPaletteItemViewModel
             {
@@ -44,6 +49,17 @@ namespace CircuitSimulatorWpf.ViewModels
                 CreateElement = () => new Ammeter("A1", 0, 0)
             });
             Categories.Add(measureElements);
+
+            var symbols = new ElementCategoryViewModel { Name = "Symbole" };
+            symbols.Items.Add(new ElementPaletteItemViewModel
+            {
+                DisplayName = "Masa (GND)",
+                IconPath = "/Assets/ground.svg",
+                IsGroundSymbol = true,
+                CreateElement = null
+            });
+            Categories.Add(symbols);
+
         }
         public void HandlePinClick(PinViewModel pin)
         {
@@ -64,15 +80,83 @@ namespace CircuitSimulatorWpf.ViewModels
         }
         public void PlaceElement(ElementPaletteItemViewModel paletteItem, Point position)
         {
-            var element = paletteItem.CreateElement();
-            var canvasElement = new CanvasElementViewModel(
-                element,
-                paletteItem.IconPath,
-                paletteItem.DisplayName,
-                position.X,
-                position.Y);
+            if (paletteItem.IsGroundSymbol)
+            {
+                GroundMarkers.Add(new GroupMarkerViewModel(position.X, position.Y));
+                return;
+            }
 
-            PlacedElements.Add(canvasElement);
+            var element = paletteItem.CreateElement();
+            PlacedElements.Add(new CanvasElementViewModel(element, paletteItem.IconPath, paletteItem.DisplayName, position.X, position.Y));
+        }
+        private (Dictionary<PinViewModel, int> pinToGroup, int groupCount) BuildGroups()
+        {
+            var pins = PlacedElements.SelectMany(e => new[] { e.PinA, e.PinB })
+                                     .Concat(GroundMarkers.Select(g => g.Pin))
+                                     .ToList();
+            var parent = new Dictionary<PinViewModel, PinViewModel>();
+            foreach (var pin in pins)
+            {
+                parent[pin] = pin;
+            }
+            PinViewModel Find(PinViewModel p)
+            {
+                while (parent[p] != p)
+                {
+                    p = parent[p];
+                }
+                return p;
+            }
+            void Union(PinViewModel a, PinViewModel b)
+            {
+                var ra = Find(a);
+                var rb = Find(b);
+                if (ra != rb) parent[ra] = rb;
+            }
+            foreach (var wire in Wires)
+            {
+                Union(wire.StartPin, wire.EndPin);
+            }
+            var rootToIndex = new Dictionary<PinViewModel, int>();
+            var pinToGroup = new Dictionary<PinViewModel, int>();
+            foreach (var p in pins)
+            {
+                var root = Find(p);
+                if (!rootToIndex.TryGetValue(root, out int idx))
+                {
+                    idx = rootToIndex.Count;
+                    rootToIndex[root] = idx;
+                }
+                pinToGroup[p] = idx;
+            }
+            return (pinToGroup, rootToIndex.Count);
+        }
+        public Circuit BuildCircuit()
+        {
+            var (pinToGroup, groupCount) = BuildGroups();
+
+            // grupy zawierające którykolwiek pin masy = uziemione
+            var groundGroups = new HashSet<int>(GroundMarkers.Select(g => pinToGroup[g.Pin]));
+
+            var circuit = new Circuit();
+            var groupToNode = new Node[groupCount];
+            for (int i = 0; i < groupCount; i++)
+                groupToNode[i] = circuit.AddNode($"N{i}", isGround: groundGroups.Contains(i));
+
+            foreach (var el in PlacedElements)
+            {
+                int groupA = pinToGroup[el.PinA];
+                int groupB = pinToGroup[el.PinB];
+                circuit.AddElement(el.Element, groupToNode[groupA], groupToNode[groupB]);
+            }
+
+            return circuit;
+        }
+        [RelayCommand]
+        private void RunSimulation()
+        {
+            var circuit = BuildCircuit();
+            circuit.Solve();
         }
     }
 }

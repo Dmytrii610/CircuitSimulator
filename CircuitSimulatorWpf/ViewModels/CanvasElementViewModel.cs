@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CircuitSimulatorWpf.ViewModels
 {
-    public partial class CanvasElementViewModel : ObservableObject
+    public partial class CanvasElementViewModel : ObservableObject, IPinOwner
     {
         public ICircuitElement Element { get; }
         public string IconPath { get; init; }
