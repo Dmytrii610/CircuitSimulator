@@ -117,7 +117,8 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            
+            <Button Content="Symuluj" Command="{Binding RunSimulationCommand}"
+                Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="8"/>
         </Grid>
     </Grid>
 </Window>

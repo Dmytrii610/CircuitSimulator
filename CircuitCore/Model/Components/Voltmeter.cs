@@ -16,7 +16,7 @@ namespace CircuitCore.Model.Components
         }
         public override void Stamp(Matrix conductance, Matrix currentVector, double dt)
         {
-            //ideal voltmeter doesn`t have a conductance -- so he have no affect to the circuit.
+            //ideal voltmeter doesn`t have a conductance -- so he has no affect to the circuit.
         }
         public override void OnSolved(Matrix result)
         {

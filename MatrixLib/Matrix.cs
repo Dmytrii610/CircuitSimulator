@@ -365,7 +365,7 @@ namespace MatrixLib
                     }
                 }
                 if (Math.Abs(maxVal) < Epsilon)
-                    throw new InvalidOperationException("kfdjsl");
+                    throw new InvalidOperationException("Macierz jest osobliwa.");
                 if (pivotRow != k)
                 {
                     for (int j = 0; j < columns; j++)

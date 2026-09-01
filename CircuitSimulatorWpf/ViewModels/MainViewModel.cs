@@ -136,7 +136,7 @@ namespace CircuitSimulatorWpf.ViewModels
             var err = new List<string>();
             var visited = new HashSet<int>(groundGroups);
             var queue = new Queue<int>(groundGroups);
-            var adj = BuildGroupsAdjacency(groundGroups);
+            var adj = BuildGroupsAdjacency(pinToGroup);
 
             while (queue.Any())
             {
@@ -155,11 +155,29 @@ namespace CircuitSimulatorWpf.ViewModels
             return err;
         }
 
-        private Dictionary<int,int> BuildGroupsAdjacency(HashSet<int> groundGroups)
+        private Dictionary<int,List<int>> BuildGroupsAdjacency(Dictionary<PinViewModel,int> pinToGroup)
         {
-            throw new NotImplementedException();
+            var adj = new Dictionary<int, List<int>>();
+            void AddEdge(int a, int b)
+            {
+                if (!adj.TryGetValue(a, out var lA)) adj[a] = lA = new List<int>();
+                lA.Add(b);
+                if (!adj.TryGetValue(b, out var lB)) adj[b] = lB = new List<int>();
+                lB.Add(a);
+            }
+            foreach (var group in pinToGroup.Values.Distinct())
+            {
+                if (!adj.ContainsKey(group)) adj[group] = new List<int>();
+            }
+            foreach (var element in PlacedElements)
+            {
+                var groupA = pinToGroup[element.PinA];
+                var groupB = pinToGroup[element.PinB];
+                if (groupA != groupB) AddEdge(groupA, groupB);
+            }
+            return adj;
         }
-
+        
         public Circuit BuildCircuit()
         {
             var (pinToGroup, groupCount) = BuildGroups();
