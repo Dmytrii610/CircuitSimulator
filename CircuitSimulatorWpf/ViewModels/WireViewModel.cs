@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Windows.Media;
+using System.Windows;
 namespace CircuitSimulatorWpf.ViewModels
 {
     public partial class WireViewModel : ObservableObject
@@ -9,25 +11,43 @@ namespace CircuitSimulatorWpf.ViewModels
         public double Y1 => StartPin.AbsoluteY;
         public double X2 => EndPin.AbsoluteX;
         public double Y2 => EndPin.AbsoluteY;
+        public PointCollection Points => BuildRoute();
         public WireViewModel(PinViewModel pinFrom, PinViewModel pinTo)
         {
             StartPin = pinFrom;
             EndPin = pinTo;
-            StartPin.PropertyChanged += (_, e) => RaiseIfPositionChanged(e.PropertyName,true);
-            EndPin.PropertyChanged += (_, e) => RaiseIfPositionChanged(e.PropertyName,false);
+            StartPin.PropertyChanged += (_, e) => OnPinMoved(e.PropertyName);
+            EndPin.PropertyChanged += (_, e) => OnPinMoved(e.PropertyName);
         }
 
-        private void RaiseIfPositionChanged(string propertyName, bool isFrom)
+       
+        private void OnPinMoved(string propertyName)
         {
-            if (propertyName == nameof(PinViewModel.AbsoluteX))
+            if (propertyName == nameof(PinViewModel.AbsoluteX) || propertyName == nameof(PinViewModel.AbsoluteY))
             {
-                OnPropertyChanged(isFrom ? nameof(X1) : nameof(X2));
-            }
-            if (propertyName == nameof(PinViewModel.AbsoluteY))
-            {
-                OnPropertyChanged(isFrom ? nameof(Y1) : nameof(Y2));
+                OnPropertyChanged(nameof(X1));
+                OnPropertyChanged(nameof(Y1));
+                OnPropertyChanged(nameof(X2));
+                OnPropertyChanged(nameof(Y2));
+                OnPropertyChanged(nameof(Points));
             }
         }
+        private PointCollection BuildRoute()
+        {
+            if (Math.Abs(Y1 - Y2) < 0.5)
+                return new PointCollection { new Point(X1, Y1), new Point(X2, Y2) };
 
+            if (Math.Abs(X1 - X2) < 0.5)
+                return new PointCollection { new Point(X1, Y1), new Point(X2, Y2) };
+
+            double midX = (X1 + X2) / 2;
+            return new PointCollection
+            {
+                new Point(X1, Y1),
+                new Point(midX, Y1),
+                new Point(midX, Y2),
+                new Point(X2, Y2)
+            };
+        }
     }
 }

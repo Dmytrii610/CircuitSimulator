@@ -74,10 +74,22 @@ namespace CircuitSimulatorWpf.ViewModels
                 pendingPin = null;
                 return;
             }
-
+            if (WireAlreadyExists(pendingPin, pin))
+            {
+                pendingPin = null;
+                return;
+            }
             Wires.Add(new WireViewModel(pendingPin, pin));
             pendingPin = null;
         }
+
+        private bool WireAlreadyExists(PinViewModel pendingPin, PinViewModel pin)
+        {
+            return Wires.Any(w => (
+            w.StartPin == pendingPin && w.EndPin == pin)
+            || (w.StartPin == pin && w.EndPin == pendingPin));
+        }
+
         public void PlaceElement(ElementPaletteItemViewModel paletteItem, Point position)
         {
             if (paletteItem.IsGroundSymbol)
