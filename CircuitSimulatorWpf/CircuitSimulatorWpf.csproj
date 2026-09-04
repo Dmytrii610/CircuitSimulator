@@ -6,6 +6,7 @@
     <None Remove="Assets\dc_voltage_source.svg" />
     <None Remove="Assets\ground.svg" />
     <None Remove="Assets\resistor.svg" />
+    <None Remove="Assets\voltmeter.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,7 @@
     <Resource Include="Assets\dc_voltage_source.svg" />
     <Resource Include="Assets\ground.svg" />
     <Resource Include="Assets\resistor.svg" />
+    <Resource Include="Assets\voltmeter.svg" />
   </ItemGroup>
 
   <PropertyGroup>

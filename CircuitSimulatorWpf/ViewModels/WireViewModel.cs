@@ -12,6 +12,8 @@ namespace CircuitSimulatorWpf.ViewModels
         public double X2 => EndPin.AbsoluteX;
         public double Y2 => EndPin.AbsoluteY;
         public PointCollection Points => BuildRoute();
+
+        [ObservableProperty] private bool isActive;
         public WireViewModel(PinViewModel pinFrom, PinViewModel pinTo)
         {
             StartPin = pinFrom;

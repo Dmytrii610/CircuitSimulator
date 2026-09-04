@@ -56,12 +56,13 @@
                     <DataTemplate>
                         <Canvas>
                             <StackPanel Orientation="Vertical"
-                        Cursor="SizeAll"
-                        MouseLeftButtonDown="CanvasElement_MouseLeftButtonDown"
-                        MouseMove="CanvasElement_MouseMove"
-                        MouseLeftButtonUp="CanvasElement_MouseLeftButtonUp">
-                                <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
-                                <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
+                                Cursor="SizeAll"
+                                MouseLeftButtonDown="CanvasElement_MouseLeftButtonDown"
+                                MouseMove="CanvasElement_MouseMove"
+                                MouseLeftButtonUp="CanvasElement_MouseLeftButtonUp">
+                                    <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
+                                    <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
+                                    <TextBlock Text="{Binding MeasurementText}" HorizontalAlignment="Center" FontSize="10" Foreground="Blue"/>
                             </StackPanel>
 
                             <Ellipse Width="8" Height="8" Fill="Red" Cursor="Hand"
@@ -82,7 +83,18 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Polyline Points="{Binding Points}" Stroke="Black" StrokeThickness="2"/>
+                        <Polyline Points="{Binding Points}" StrokeThickness="2">
+                            <Polyline.Style>
+                                <Style TargetType="Polyline">
+                                    <Setter Property="Stroke" Value="Black"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                            <Setter Property="Stroke" Value="Blue"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Polyline.Style>
+                        </Polyline>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -115,8 +127,11 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Content="Symuluj" Command="{Binding RunSimulationCommand}"
-                Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="8"/>
+            <StackPanel Orientation="Horizontal" Grid.Column="1"
+            VerticalAlignment="Top" HorizontalAlignment="Right" Margin="8">
+                <Button Content="Symuluj" Command="{Binding StartSimulationCommand}" Margin="0,0,4,0" Padding="8,4"/>
+                <Button Content="Stop" Command="{Binding StopSimulationCommand}" Padding="8,4"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

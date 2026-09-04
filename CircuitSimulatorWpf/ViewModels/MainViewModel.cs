@@ -1,10 +1,13 @@
-﻿using CircuitCore.Model;
+﻿using CircuitCore.Math;
+using CircuitCore.Model;
 using CircuitCore.Model.Components;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MathGraphLib;
 using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace CircuitSimulatorWpf.ViewModels
 {
@@ -14,7 +17,17 @@ namespace CircuitSimulatorWpf.ViewModels
         public ObservableCollection<CanvasElementViewModel> PlacedElements { get; } = new();
         public ObservableCollection<GroupMarkerViewModel> GroundMarkers { get; } = new();
         public ObservableCollection<WireViewModel> Wires { get; } = new();
+        
+        
         private PinViewModel pendingPin;
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(StartSimulationCommand))]
+        [NotifyCanExecuteChangedFor(nameof(StopSimulationCommand))]
+        private bool isSimulating;
+        private Circuit circuit;
+        private CircuitSolver solver;
+        private DispatcherTimer timer;
+
         public MainViewModel()
         {
             var sources = new ElementCategoryViewModel { Name = "Źródła zasilania" };
@@ -47,6 +60,12 @@ namespace CircuitSimulatorWpf.ViewModels
                 DisplayName = "Ammeter",
                 IconPath = "pack://application:,,,/Assets/ammeter.svg",
                 CreateElement = () => new Ammeter("A1", 0, 0)
+            });
+            measureElements.Items.Add(new ElementPaletteItemViewModel
+            {
+                DisplayName = "Voltmeter",
+                IconPath = "pack://application:,,,/Assets/voltmeter.svg",
+                CreateElement = () => new Voltmeter("V1", 0, 0)
             });
             Categories.Add(measureElements);
 
@@ -224,5 +243,60 @@ namespace CircuitSimulatorWpf.ViewModels
                 MessageBox.Show(ex.Message);
             }
         }
+        [RelayCommand(CanExecute = nameof(CanStart))]
+        private void StartSimulation()
+        {
+            try
+            {
+                circuit = BuildCircuit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Błąd budowy obwodu");
+                return;
+            }
+
+            solver = new CircuitSolver(circuit, timeStep: 0.01);
+
+            foreach (var wire in Wires)
+                wire.IsActive = true;
+
+            timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
+            timer.Tick += (_, _) => StepSimulation();
+            timer.Start();
+
+            IsSimulating = true;
+        }
+        private bool CanStart() => !IsSimulating;
+
+        private void StepSimulation()
+        {
+            try
+            {
+                solver.Step();
+            }
+            catch (Exception ex)
+            {
+                StopSimulation();
+                MessageBox.Show(ex.Message, "Błąd symulacji — zatrzymano");
+                return;
+            }
+
+            foreach (var el in PlacedElements)
+                el.RefreshMeasurement();
+        }
+
+        [RelayCommand(CanExecute = nameof(CanStop))]
+        private void StopSimulation()
+        {
+            timer?.Stop();
+            timer = null;
+
+            foreach (var wire in Wires)
+                wire.IsActive = false;
+
+            IsSimulating = false;
+        }
+        private bool CanStop() => IsSimulating;
     }
 }
