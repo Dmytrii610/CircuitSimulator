@@ -58,6 +58,12 @@ namespace CircuitSimulatorWpf.ViewModels
                 IconPath = "pack://application:,,,/Assets/capasitor.svg",
                 CreateElement = () => new Capasitor("C1", 0, 0, 100e-6)
             });
+            dcElements.Items.Add(new ElementPaletteItemViewModel
+            {
+                DisplayName = "Cewka",
+                IconPath = "pack://application:,,,/Assets/inductor.svg",
+                CreateElement = () => new Inductor("L1", 0, 0, 1)
+            });
             Categories.Add(dcElements);
 
             var measureElements = new ElementCategoryViewModel { Name = "Elementy pomiarowe" };
