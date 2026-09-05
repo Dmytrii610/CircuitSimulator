@@ -75,7 +75,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <ItemsControl ItemsSource="{Binding Wires}" IsHitTestVisible="False">
+            <ItemsControl ItemsSource="{Binding Wires}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas/>
@@ -83,22 +83,26 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Polyline Points="{Binding Points}" StrokeThickness="2">
-                            <Polyline.Style>
-                                <Style TargetType="Polyline">
-                                    <Setter Property="Stroke" Value="Black"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                            <Setter Property="Stroke" Value="Blue"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Polyline.Style>
-                        </Polyline>
+                        <Canvas>
+                            <Line X1="{Binding P0.X}" Y1="{Binding P0.Y}" X2="{Binding P1.X}" Y2="{Binding P1.Y}"
+                      Stroke="{Binding WireBrush}" StrokeThickness="2" IsHitTestVisible="False"/>
+
+                            <Line X1="{Binding P1.X}" Y1="{Binding P1.Y}" X2="{Binding P2.X}" Y2="{Binding P2.Y}"
+                      Stroke="Transparent" StrokeThickness="12" Cursor="SizeWE"
+                      MouseLeftButtonDown="WireBend_MouseLeftButtonDown"
+                      MouseMove="WireBend_MouseMove"
+                      MouseLeftButtonUp="WireBend_MouseLeftButtonUp"/>
+
+                            <Line X1="{Binding P1.X}" Y1="{Binding P1.Y}" X2="{Binding P2.X}" Y2="{Binding P2.Y}"
+                      Stroke="{Binding WireBrush}" StrokeThickness="2" IsHitTestVisible="False"/>
+
+                            <Line X1="{Binding P2.X}" Y1="{Binding P2.Y}" X2="{Binding P3.X}" Y2="{Binding P3.Y}"
+                      Stroke="{Binding WireBrush}" StrokeThickness="2" IsHitTestVisible="False"/>
+                        </Canvas>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-                <ItemsControl ItemsSource="{Binding GroundMarkers}" IsHitTestVisible="True">
+            <ItemsControl ItemsSource="{Binding GroundMarkers}" IsHitTestVisible="True">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Canvas/>

@@ -14,7 +14,7 @@ namespace CircuitCore.Model.Components
         }
         public override void OnSolved(Matrix result)
         {
-            MeasuredValue = (VoltageAt(result, NodeA) - VoltageAt(result, NodeB)) / Current;
+            MeasuredValue = (VoltageAt(result, NodeB) - VoltageAt(result, NodeA)) / Current;
         }
     }
 }

@@ -5,8 +5,10 @@
     <None Remove="Assets\capasitor.svg" />
     <None Remove="Assets\dc_voltage_source.svg" />
     <None Remove="Assets\ground.svg" />
+    <None Remove="Assets\ohmmeter.svg" />
     <None Remove="Assets\resistor.svg" />
     <None Remove="Assets\voltmeter.svg" />
+    <None Remove="Assets\сurrent_source.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,8 +30,10 @@
     <Resource Include="Assets\capasitor.svg" />
     <Resource Include="Assets\dc_voltage_source.svg" />
     <Resource Include="Assets\ground.svg" />
+    <Resource Include="Assets\ohmmeter.svg" />
     <Resource Include="Assets\resistor.svg" />
     <Resource Include="Assets\voltmeter.svg" />
+    <Resource Include="Assets\сurrent_source.svg" />
   </ItemGroup>
 
   <PropertyGroup>

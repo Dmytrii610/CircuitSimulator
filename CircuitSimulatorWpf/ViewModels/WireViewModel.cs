@@ -11,7 +11,14 @@ namespace CircuitSimulatorWpf.ViewModels
         public double Y1 => StartPin.AbsoluteY;
         public double X2 => EndPin.AbsoluteX;
         public double Y2 => EndPin.AbsoluteY;
-        public PointCollection Points => BuildRoute();
+        public double MidX => manualMidX ?? (X1 + X2) / 2;
+        public Point P0 => new Point(X1,Y1);
+        public Point P1 => new Point(MidX,Y1);
+        public Point P2 => new Point(MidX,Y2);
+        public Point P3 => new Point(X2,Y2);
+        public Brush WireBrush => IsActive ? Brushes.Blue : Brushes.Black;
+
+        private double? manualMidX;
 
         [ObservableProperty] private bool isActive;
         public WireViewModel(PinViewModel pinFrom, PinViewModel pinTo)
@@ -20,6 +27,11 @@ namespace CircuitSimulatorWpf.ViewModels
             EndPin = pinTo;
             StartPin.PropertyChanged += (_, e) => OnPinMoved(e.PropertyName);
             EndPin.PropertyChanged += (_, e) => OnPinMoved(e.PropertyName);
+        }
+        public void SetMidX(double x)
+        {
+            manualMidX = x;
+            RaisePointsChanged();
         }
 
        
@@ -31,25 +43,21 @@ namespace CircuitSimulatorWpf.ViewModels
                 OnPropertyChanged(nameof(Y1));
                 OnPropertyChanged(nameof(X2));
                 OnPropertyChanged(nameof(Y2));
-                OnPropertyChanged(nameof(Points));
+                RaisePointsChanged();
             }
         }
-        private PointCollection BuildRoute()
+        private void RaisePointsChanged()
         {
-            if (Math.Abs(Y1 - Y2) < 0.5)
-                return new PointCollection { new Point(X1, Y1), new Point(X2, Y2) };
+            OnPropertyChanged(nameof(MidX));
+            OnPropertyChanged(nameof(P0));
+            OnPropertyChanged(nameof(P1));
+            OnPropertyChanged(nameof(P2));
+            OnPropertyChanged(nameof(P3));
 
-            if (Math.Abs(X1 - X2) < 0.5)
-                return new PointCollection { new Point(X1, Y1), new Point(X2, Y2) };
-
-            double midX = (X1 + X2) / 2;
-            return new PointCollection
-            {
-                new Point(X1, Y1),
-                new Point(midX, Y1),
-                new Point(midX, Y2),
-                new Point(X2, Y2)
-            };
+        }
+        partial void OnIsActiveChanged(bool value)
+        {
+            OnPropertyChanged(nameof(WireBrush));
         }
     }
 }

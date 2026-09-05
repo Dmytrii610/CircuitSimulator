@@ -24,7 +24,7 @@ namespace CircuitSimulator.Tests
 
             circuit.Solve();
 
-            Assert.That(ohmmeter.MeasuredValue, Is.EqualTo(-resistor.Resistance).Within(1e-9));
+            Assert.That(ohmmeter.MeasuredValue, Is.EqualTo(resistor.Resistance).Within(1e-9));
         }
     }
 }

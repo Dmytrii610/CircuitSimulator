@@ -13,6 +13,9 @@ namespace CircuitSimulatorWpf
     {
         private IPinOwner draggedOwner;
         private Point dragStartPoint;
+        private WireViewModel draggedWire;
+        private double dragStartMouseX;
+        private double dragStartMidX;
 
         public MainWindow()
         {
@@ -120,6 +123,30 @@ namespace CircuitSimulatorWpf
                 vm.HandlePinClick(pin);
                 e.Handled = true;
             }
+        }
+
+        private void WireBend_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(sender is FrameworkElement fe && fe.DataContext is WireViewModel wire)
+            {
+                draggedWire = wire;
+                dragStartMouseX = e.GetPosition(SimulationCanvas).X;
+                dragStartMidX = wire.MidX;
+                fe.CaptureMouse();
+                e.Handled = true;
+            }
+        }
+        private void WireBend_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (draggedWire == null || e.LeftButton != MouseButtonState.Pressed) return;
+            double currentMouseX = e.GetPosition(SimulationCanvas).X;
+            double delta = currentMouseX - dragStartMouseX;
+            draggedWire.SetMidX(dragStartMidX + delta);
+        }
+        private void WireBend_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe) fe.ReleaseMouseCapture();
+            draggedWire = null;
         }
     }
 }

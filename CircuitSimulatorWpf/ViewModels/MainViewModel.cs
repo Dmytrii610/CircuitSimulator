@@ -37,6 +37,12 @@ namespace CircuitSimulatorWpf.ViewModels
                 IconPath = "pack://application:,,,/Assets/dc_voltage_source.svg",
                 CreateElement = () => new VoltageSource("VS1", 0, 0, 5.0)
             });
+            sources.Items.Add(new ElementPaletteItemViewModel
+            {
+                DisplayName = "Źródło prądowe",
+                IconPath = "pack://application:,,,/Assets/сurrent_source.svg",
+                CreateElement = () => new CurrentSource("CS1", 0, 0, 5)
+            });
             Categories.Add(sources);
 
             var dcElements = new ElementCategoryViewModel { Name = "Elementy" };
@@ -50,7 +56,7 @@ namespace CircuitSimulatorWpf.ViewModels
             {
                 DisplayName = "Kondensator",
                 IconPath = "pack://application:,,,/Assets/capasitor.svg",
-                CreateElement = () => new Capasitor("C1", 0, 0, 100)
+                CreateElement = () => new Capasitor("C1", 0, 0, 100e-6)
             });
             Categories.Add(dcElements);
 
@@ -66,6 +72,12 @@ namespace CircuitSimulatorWpf.ViewModels
                 DisplayName = "Voltmeter",
                 IconPath = "pack://application:,,,/Assets/voltmeter.svg",
                 CreateElement = () => new Voltmeter("V1", 0, 0)
+            });
+            measureElements.Items.Add(new ElementPaletteItemViewModel
+            {
+                DisplayName = "Ohmeter",
+                IconPath = "pack://application:,,,/Assets/ohmmeter.svg",
+                CreateElement = () => new Ohmmeter("M1", 0, 0)
             });
             Categories.Add(measureElements);
 
@@ -202,6 +214,7 @@ namespace CircuitSimulatorWpf.ViewModels
             }
             foreach (var element in PlacedElements)
             {
+                if (element.Element is Voltmeter) continue;
                 var groupA = pinToGroup[element.PinA];
                 var groupB = pinToGroup[element.PinB];
                 if (groupA != groupB) AddEdge(groupA, groupB);
@@ -230,22 +243,19 @@ namespace CircuitSimulatorWpf.ViewModels
 
             return circuit;
         }
-        [RelayCommand]
-        private void RunSimulation()
-        {
-            var circuit = BuildCircuit();
-            try
-            {
-                circuit.Solve();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+        
         [RelayCommand(CanExecute = nameof(CanStart))]
         private void StartSimulation()
         {
+            var (pinToGroup, groupCount) = BuildGroups();
+            var groundGroups = new HashSet<int>(
+                GroundMarkers.Select(g => pinToGroup[g.Pin])
+            );
+            var err = ValidateGroundConnection(pinToGroup, groundGroups);
+            if (err.Any())
+            {
+                MessageBox.Show(string.Join('\n', err), "Nie można uruchomić symulacji.");
+            }
             try
             {
                 circuit = BuildCircuit();
@@ -258,8 +268,7 @@ namespace CircuitSimulatorWpf.ViewModels
 
             solver = new CircuitSolver(circuit, timeStep: 0.01);
 
-            foreach (var wire in Wires)
-                wire.IsActive = true;
+            foreach (var wire in Wires) wire.IsActive = true;
 
             timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
             timer.Tick += (_, _) => StepSimulation();
