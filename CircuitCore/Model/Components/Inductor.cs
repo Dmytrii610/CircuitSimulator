@@ -9,7 +9,7 @@ namespace CircuitCore.Model.Components
     public class Inductor : BranchCircuitElement
     {
         public double Inductance { get; set; }
-        public double Current { get; private set; }
+        public double previousCurrent { get; private set; }
 
         public Inductor(string name, int nodeA, int nodeB, double inductance)
             :base(name,nodeA,nodeB)
@@ -33,11 +33,11 @@ namespace CircuitCore.Model.Components
                 conductance[k, NodeB] = -1;
             }
             conductance[k, k] -= coefficient;
-            currentVector[k, 0] = coefficient * Current;
+            currentVector[k, 0] = coefficient * previousCurrent;
         }
         public override void OnSolved(Matrix result)
         {
-            Current = result[BranchIndex, 0];
+            previousCurrent = result[BranchIndex, 0];
         }
     }
 }

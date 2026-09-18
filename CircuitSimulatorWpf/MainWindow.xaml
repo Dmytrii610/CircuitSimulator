@@ -36,7 +36,7 @@
         </ScrollViewer>
 
         <!-- Prawa strona: pole symulacji -->
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" ClipToBounds="True">
             <ItemsControl x:Name="SimulationCanvas" Grid.Column="1"
           ItemsSource="{Binding PlacedElements}"
           AllowDrop="True" Drop="SimulationCanvas_Drop"
@@ -59,7 +59,8 @@
                                 Cursor="SizeAll"
                                 MouseLeftButtonDown="CanvasElement_MouseLeftButtonDown"
                                 MouseMove="CanvasElement_MouseMove"
-                                MouseLeftButtonUp="CanvasElement_MouseLeftButtonUp">
+                                MouseLeftButtonUp="CanvasElement_MouseLeftButtonUp"
+                                MouseRightButtonDown="CanvasElement_MouseRightButtonDown">
                                     <svgc:SvgViewbox Source="{Binding IconPath}" Width="40" Height="40"/>
                                     <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" FontSize="10"/>
                                     <TextBlock Text="{Binding MeasurementText}" HorizontalAlignment="Center" FontSize="10" Foreground="Blue"/>
@@ -122,7 +123,8 @@
                                 Cursor="SizeAll"
                                 MouseLeftButtonDown="GroundMarker_MouseLeftButtonDown"
                                 MouseMove="GroundMarker_MouseMove"
-                                MouseLeftButtonUp="GroundMarker_MouseLeftButtonUp"/>
+                                MouseLeftButtonUp="GroundMarker_MouseLeftButtonUp"
+                                MouseRightButtonDown="GroundMarker_MouseRightButtonDown"/>
 
                             <Ellipse Width="8" Height="8" Fill="Red" Cursor="Hand"
                              Canvas.Left="{Binding Pin.OffsetX}" Canvas.Top="{Binding Pin.OffsetY}"

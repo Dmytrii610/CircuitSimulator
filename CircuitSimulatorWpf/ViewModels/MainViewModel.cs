@@ -4,6 +4,7 @@ using CircuitCore.Model.Components;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MathGraphLib;
+using SharpVectors.Dom;
 using System.Collections.ObjectModel;
 using System.Reflection.Metadata;
 using System.Windows;
@@ -313,5 +314,37 @@ namespace CircuitSimulatorWpf.ViewModels
             IsSimulating = false;
         }
         private bool CanStop() => IsSimulating;
+        public void DeleteElement(CanvasElementViewModel element)
+        {
+            if (IsSimulating)
+            {
+                MessageBox.Show("Nie można usuwać elementów podczas symulacji.", "Operacja niedozwolona");
+                return;
+            }
+            RemoveWiresConnectedTo(element.PinA);
+            RemoveWiresConnectedTo(element.PinB);
+            if (pendingPin == element.PinA || pendingPin == element.PinB) pendingPin = null;
+            PlacedElements.Remove(element);
+        }
+        private void RemoveWiresConnectedTo(PinViewModel pin)
+        {
+            var remove = Wires.Where(w => w.StartPin == pin || w.EndPin == pin)
+                              .ToList();
+            foreach (var item in remove)
+            {
+                Wires.Remove(item);
+            }
+        }
+        public void DeleteGround(GroupMarkerViewModel marker)
+        {
+            if (IsSimulating)
+            {
+                MessageBox.Show("Nie można usuwać elementów podczas symulacji.", "Operacja niedozwolona");
+                return;
+            }
+            RemoveWiresConnectedTo(marker.Pin);
+            if (pendingPin == marker.Pin) pendingPin = null;
+            GroundMarkers.Remove(marker);
+        }
     }
 }

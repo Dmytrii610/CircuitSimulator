@@ -96,6 +96,34 @@ namespace CircuitSimulatorWpf
             if (sender is FrameworkElement fe)
                 EndDrag(fe);
         }
+        private void CanvasElement_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.DataContext is CanvasElementViewModel vm)
+            {
+                var menu = new ContextMenu();
+                var deleteItem = new MenuItem { Header = "Usuń" };
+                deleteItem.Click += (_, _) => ((MainViewModel)DataContext).DeleteElement(vm);
+                menu.Items.Add(deleteItem);
+
+                fe.ContextMenu = menu;
+                menu.IsOpen = true;
+            }
+            e.Handled = true;
+        }
+        private void GroundMarker_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.DataContext is GroupMarkerViewModel vm)
+            {
+                var menu = new ContextMenu();
+                var deleteItem = new MenuItem { Header = "Usuń" };
+                deleteItem.Click += (_, _) => ((MainViewModel)DataContext).DeleteGround(vm);
+                menu.Items.Add(deleteItem);
+
+                fe.ContextMenu = menu;
+                menu.IsOpen = true;
+            }
+            e.Handled = true;
+        }
 
         private void GroundMarker_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -141,7 +169,9 @@ namespace CircuitSimulatorWpf
             if (draggedWire == null || e.LeftButton != MouseButtonState.Pressed) return;
             double currentMouseX = e.GetPosition(SimulationCanvas).X;
             double delta = currentMouseX - dragStartMouseX;
-            draggedWire.SetMidX(dragStartMidX + delta);
+            double proposed = dragStartMidX + delta;
+            double boundedX = Math.Clamp(proposed, 0, SimulationCanvas.ActualWidth);
+            draggedWire.SetMidX(boundedX);
         }
         private void WireBend_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
