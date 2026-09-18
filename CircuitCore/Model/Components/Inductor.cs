@@ -18,22 +18,28 @@ namespace CircuitCore.Model.Components
         }
         public override void Stamp(Matrix conductance, Matrix currentVector, double dt)
         {
+            if (!double.IsFinite(dt) || dt <= 0)
+                throw new ArgumentOutOfRangeException(nameof(dt));
+
+            if (!double.IsFinite(Inductance) || Inductance <= 0)
+                throw new ArgumentOutOfRangeException(nameof(Inductance));
+
             var k = BranchIndex;
             var coefficient = Inductance / dt;
 
             if (!NodeAIsGround)
             {
-                conductance[NodeA, k] = 1;
-                conductance[k, NodeA] = -1;
+                conductance[NodeA, k] += 1;
+                conductance[k, NodeA] += 1;
             }
 
             if (!NodeBIsGround)
             {
-                conductance[NodeB, k] = 1;
-                conductance[k, NodeB] = -1;
+                conductance[NodeB, k] -= 1;
+                conductance[k, NodeB] -= 1;
             }
             conductance[k, k] -= coefficient;
-            currentVector[k, 0] = coefficient * previousCurrent;
+            currentVector[k, 0] -= coefficient * previousCurrent;
         }
         public override void OnSolved(Matrix result)
         {
