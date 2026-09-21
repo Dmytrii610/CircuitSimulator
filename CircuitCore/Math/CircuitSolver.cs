@@ -15,6 +15,11 @@ namespace CircuitCore.Math
 
         public CircuitSolver(Circuit circuit, double timeStep)
         {
+            if (!double.IsFinite(timeStep) || timeStep <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(timeStep), timeStep, "Time step must be positive and finite.");
+            }
+
             this.circuit = circuit;
             TimeStep = timeStep;
         }
@@ -32,6 +37,10 @@ namespace CircuitCore.Math
                 Step();
             }
             
+        }
+        public void Reset()
+        {
+            throw new NotImplementedException();
         }
         public IEnumerable<IMeasure> GetMeasurements() => circuit.Elements.OfType<IMeasure>();
     }

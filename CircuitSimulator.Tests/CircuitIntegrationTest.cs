@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using CircuitCore.Model;
 using CircuitCore.Model.Components;
+using CircuitCore.Math;
 
 [TestFixture]
 public class CircuitIntegrationTests
@@ -37,5 +38,18 @@ public class CircuitIntegrationTests
         circuit.AddElement(resistor, gnd, gnd);
 
         Assert.Throws<InvalidOperationException>(() => circuit.Solve());
+    }
+    [TestCase(0.0)]
+    [TestCase(-0.01)]
+    [TestCase(double.NaN)]
+    [TestCase(double.PositiveInfinity)]
+    [TestCase(double.NegativeInfinity)]
+    public void CircuitSolver_InvalidTimeStep_Throws(double timeStep)
+    {
+        var circuit = new Circuit();
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+            new CircuitSolver(circuit, timeStep);
+        });
     }
 }
