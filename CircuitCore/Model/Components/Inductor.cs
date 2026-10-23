@@ -45,5 +45,9 @@ namespace CircuitCore.Model.Components
         {
             previousCurrent = result[BranchIndex, 0];
         }
+        public override void ResetState()
+        {
+            previousCurrent = 0;
+        }
     }
 }

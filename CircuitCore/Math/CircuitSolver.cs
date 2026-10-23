@@ -40,7 +40,11 @@ namespace CircuitCore.Math
         }
         public void Reset()
         {
-            throw new NotImplementedException();
+            CurrentTime = 0;
+            foreach (var element in circuit.Elements)
+            {
+                element.ResetState();
+            }
         }
         public IEnumerable<IMeasure> GetMeasurements() => circuit.Elements.OfType<IMeasure>();
     }

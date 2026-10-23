@@ -136,7 +136,9 @@
             <StackPanel Orientation="Horizontal" Grid.Column="1"
             VerticalAlignment="Top" HorizontalAlignment="Right" Margin="8">
                 <Button Content="Symuluj" Command="{Binding StartSimulationCommand}" Margin="0,0,4,0" Padding="8,4"/>
-                <Button Content="Stop" Command="{Binding StopSimulationCommand}" Padding="8,4"/>
+                <Button Content="Stop" Command="{Binding StopSimulationCommand}" Margin="0,0,4,0" Padding="8,4"/>
+                <Button Content="Reset" Command="{Binding ResetSimulationCommand}" Padding="8,4"/>
+
             </StackPanel>
         </Grid>
     </Grid>

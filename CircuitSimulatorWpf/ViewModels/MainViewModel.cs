@@ -24,6 +24,7 @@ namespace CircuitSimulatorWpf.ViewModels
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(StartSimulationCommand))]
         [NotifyCanExecuteChangedFor(nameof(StopSimulationCommand))]
+        [NotifyCanExecuteChangedFor(nameof(ResetSimulationCommand))]
         private bool isSimulating;
         private Circuit circuit;
         private CircuitSolver solver;
@@ -313,6 +314,11 @@ namespace CircuitSimulatorWpf.ViewModels
 
             IsSimulating = false;
         }
+        [RelayCommand(CanExecute = nameof(CanStop))]
+        private void ResetSimulation()
+        {
+            solver.Reset();
+        }
         private bool CanStop() => IsSimulating;
         public void DeleteElement(CanvasElementViewModel element)
         {
@@ -346,5 +352,6 @@ namespace CircuitSimulatorWpf.ViewModels
             if (pendingPin == marker.Pin) pendingPin = null;
             GroundMarkers.Remove(marker);
         }
+
     }
 }

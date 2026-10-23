@@ -37,5 +37,9 @@ namespace CircuitCore.Model.Components
         {
             previousVoltage = VoltageAt(result, NodeA) - VoltageAt(result, NodeB);
         }
+        public override void ResetState()
+        {
+            previousVoltage = 0;
+        }
     }
 }

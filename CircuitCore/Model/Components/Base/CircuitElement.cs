@@ -20,5 +20,6 @@ namespace CircuitCore.Model.Components.Base
         protected double VoltageAt(Matrix result, int nodeIndex) => nodeIndex == NodeIndex.Ground ? 0 : result[nodeIndex, 0];
         public abstract void Stamp(Matrix conductance, Matrix currentVector, double dt);
         public virtual void OnSolved(Matrix result) { }
+        public virtual void ResetState() { }
     }
 }

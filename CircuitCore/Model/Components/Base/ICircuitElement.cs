@@ -10,5 +10,6 @@ namespace CircuitCore.Model.Components.Base
         int NodeB { get; set; }
         void Stamp(Matrix conductance, Matrix currentVector, double dt);
         void OnSolved(Matrix result) { }
+        void ResetState() { }
     }
 }
