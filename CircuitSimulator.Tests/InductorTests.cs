@@ -185,6 +185,7 @@ namespace CircuitSimulator.Tests
 
             //TODO - implement the Reset method.
             solver.Reset();
+            
             Assert.That(solver.CurrentTime, Is.EqualTo(0));
             Assert.That(inductor.previousCurrent, Is.EqualTo(0));
             for (int step = 0; step < 10; step++)
