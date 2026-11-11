@@ -123,10 +123,11 @@ namespace CircuitSimulatorWpf
                         if (window.ShowDialog() == true)
                         {
                             editVm.Apply();
-                            menu.Items.Add(editItem);
+                            
                         }
-                    };   
-                    
+                    };
+                    menu.Items.Add(editItem);
+
                 }
                 fe.ContextMenu = menu;
                 menu.IsOpen = true;
