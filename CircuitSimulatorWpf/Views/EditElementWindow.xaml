@@ -12,13 +12,13 @@
             <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
 
-        <svgc:SvgViewbox Grid.Column="0" Source="{Binding ???}"
+        <svgc:SvgViewbox Grid.Column="0" Source="{Binding IconPath}"
                          Width="80" Height="80" Margin="0,0,12,0"/>
 
         <StackPanel Grid.Column="1">
             <TextBlock Text="{Binding DisplayName}" FontWeight="Bold"/>
-            <TextBlock Text="{Binding ???}" Margin="0,8,0,2"/>
-            <TextBox Text="{Binding ???, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="{Binding ParameterLabel}" Margin="0,8,0,2"/>
+            <TextBox Text="{Binding EditedValue, UpdateSourceTrigger=PropertyChanged}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
                 <Button Content="OK" IsDefault="True" Click="Ok_Click" Width="70" Margin="0,0,6,0"/>
