@@ -18,8 +18,10 @@ namespace CircuitSimulatorWpf.ViewModels
         public ObservableCollection<CanvasElementViewModel> PlacedElements { get; } = new();
         public ObservableCollection<GroupMarkerViewModel> GroundMarkers { get; } = new();
         public ObservableCollection<WireViewModel> Wires { get; } = new();
-        
-        
+
+
+        [ObservableProperty]
+        private CanvasElementViewModel selectedElement;
         private PinViewModel pendingPin;
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(StartSimulationCommand))]
@@ -29,7 +31,8 @@ namespace CircuitSimulatorWpf.ViewModels
         private Circuit circuit;
         private CircuitSolver solver;
         private DispatcherTimer timer;
-
+        
+        
         public MainViewModel()
         {
             var sources = new ElementCategoryViewModel { Name = "Źródła zasilania" };
@@ -263,6 +266,7 @@ namespace CircuitSimulatorWpf.ViewModels
             if (err.Any())
             {
                 MessageBox.Show(string.Join('\n', err), "Nie można uruchomić symulacji.");
+                return;
             }
             try
             {

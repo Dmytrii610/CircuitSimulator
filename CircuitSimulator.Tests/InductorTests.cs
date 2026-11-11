@@ -183,7 +183,6 @@ namespace CircuitSimulator.Tests
             var firstRun = inductor.previousCurrent;
             Assert.That(firstRun, Is.GreaterThan(0));
 
-            //TODO - implement the Reset method.
             solver.Reset();
             
             Assert.That(solver.CurrentTime, Is.EqualTo(0));

@@ -81,8 +81,13 @@ namespace CircuitSimulatorWpf
 
         private void CanvasElement_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+
             if (sender is FrameworkElement fe && fe.DataContext is CanvasElementViewModel vm)
+            {
+                var mainVm = (MainViewModel)DataContext;
+                mainVm.SelectedElement = vm;
                 StartDrag(fe, vm, e);
+            }
         }
 
         private void CanvasElement_MouseMove(object sender, MouseEventArgs e)
