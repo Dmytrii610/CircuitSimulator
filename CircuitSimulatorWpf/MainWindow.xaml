@@ -140,12 +140,6 @@
                 <Button Content="Reset" Command="{Binding ResetSimulationCommand}" Padding="8,4"/>
 
             </StackPanel>
-            <StackPanel Grid.Column="2" Margin="8"
-            DataContext="{Binding SelectedElement}">
-                <TextBlock Text="Właściwości" FontWeight="Bold" Margin="0,0,0,8"/>
-                <TextBlock Text="{Binding ParameterLabel}"/>
-                <TextBox Text="{Binding ParameterValue}"/>
-            </StackPanel>
         </Grid>
     </Grid>
 </Window>

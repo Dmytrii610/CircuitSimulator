@@ -20,8 +20,6 @@ namespace CircuitSimulatorWpf.ViewModels
         public ObservableCollection<WireViewModel> Wires { get; } = new();
 
 
-        [ObservableProperty]
-        private CanvasElementViewModel selectedElement;
         private PinViewModel pendingPin;
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(StartSimulationCommand))]

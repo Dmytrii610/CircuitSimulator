@@ -3,6 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CircuitSimulatorWpf.Views;
 
 namespace CircuitSimulatorWpf
 {
@@ -84,8 +85,6 @@ namespace CircuitSimulatorWpf
 
             if (sender is FrameworkElement fe && fe.DataContext is CanvasElementViewModel vm)
             {
-                var mainVm = (MainViewModel)DataContext;
-                mainVm.SelectedElement = vm;
                 StartDrag(fe, vm, e);
             }
         }
@@ -110,6 +109,25 @@ namespace CircuitSimulatorWpf
                 deleteItem.Click += (_, _) => ((MainViewModel)DataContext).DeleteElement(vm);
                 menu.Items.Add(deleteItem);
 
+                if (vm.ParameterLabel != null)
+                {
+                    var editItem = new MenuItem { Header = "Zmień" };
+                    editItem.Click += (_, _) =>
+                    {
+                        var editVm = new EditElementViewModel(vm);
+                        var window = new EditElementWindow
+                        {
+                            DataContext = editVm,
+                            Owner = this
+                        };
+                        if (window.ShowDialog() == true)
+                        {
+                            editVm.Apply();
+                            menu.Items.Add(editItem);
+                        }
+                    };   
+                    
+                }
                 fe.ContextMenu = menu;
                 menu.IsOpen = true;
             }
